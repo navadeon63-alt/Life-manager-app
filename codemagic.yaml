@@ -18,8 +18,10 @@ workflows:
           content = re.sub(r'flutter_gemma:.*', 'flutter_gemma: ^0.12.5', content)
           with open('pubspec.yaml', 'w') as f:
               f.write(content)
-          print('Fixed!')
           "
+      - name: Copy fixed local_ai_service
+        script: |
+          cp local_ai_service.dart life_manager_app/lib/services/local_ai_service.dart
       - name: Get Flutter packages
         script: |
           cd life_manager_app
@@ -29,4 +31,4 @@ workflows:
           cd life_manager_app
           flutter build apk --release
     artifacts:
-      - life_manager_app/build/app/outputs/flutter-apk/app-release.apk 
+      - life_manager_app/build/app/outputs/flutter-apk/app-release.apk
