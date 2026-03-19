@@ -8,20 +8,30 @@ workflows:
       - name: Extract project
         script: |
           unzip -o Kimi_Agent_完整Flutter.zip
-      - name: Fix flutter_gemma version
+      - name: Remove offline AI
         script: |
           cd life_manager_app
           python3 -c "
-          import re
           with open('pubspec.yaml', 'r') as f:
               content = f.read()
-          content = re.sub(r'flutter_gemma:.*', 'flutter_gemma: ^0.12.5', content)
+          content = content.replace('flutter_gemma: ^0.0.5', '').replace('flutter_gemma: ^0.12.5', '')
           with open('pubspec.yaml', 'w') as f:
               f.write(content)
           "
-      - name: Copy fixed local_ai_service
-        script: |
-          cp local_ai_service.dart life_manager_app/lib/services/local_ai_service.dart
+          cat > lib/services/local_ai_service.dart << 'EOF'
+          class LocalAIService {
+            static final LocalAIService _instance = LocalAIService._internal();
+            factory LocalAIService() => _instance;
+            LocalAIService._internal();
+            bool _isReady = false;
+            bool get isReady => _isReady;
+            Future<bool> isModelDownloaded() async => false;
+            Future<void> init() async {}
+            Future<String> generate(String prompt) async =>
+                'Offline AI coming soon. Please connect to internet to use AI.';
+            void dispose() {}
+          }
+          EOF
       - name: Get Flutter packages
         script: |
           cd life_manager_app
