@@ -8,10 +8,15 @@ workflows:
       - name: Extract project
         script: |
           unzip -o Kimi_Agent_完整Flutter.zip
-          cp -r life_manager_app/. .
+          ls -la
+          ls -la life_manager_app/
       - name: Get Flutter packages
-        script: flutter pub get
+        script: |
+          cd life_manager_app
+          flutter pub get
       - name: Build APK
-        script: flutter build apk --release
+        script: |
+          cd life_manager_app
+          flutter build apk --release
     artifacts:
-      - build/app/outputs/flutter-apk/app-release.apk 
+      - life_manager_app/build/app/outputs/flutter-apk/app-release.apk 
