@@ -8,8 +8,10 @@ workflows:
       - name: Extract project
         script: |
           unzip -o Kimi_Agent_完整Flutter.zip
-          ls -la
-          ls -la life_manager_app/
+      - name: Fix flutter_gemma version
+        script: |
+          cd life_manager_app
+          sed -i 's/flutter_gemma: .*/flutter_gemma: ^0.12.5/' pubspec.yaml
       - name: Get Flutter packages
         script: |
           cd life_manager_app
