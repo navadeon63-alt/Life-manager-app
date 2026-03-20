@@ -8,7 +8,19 @@ workflows:
       - name: Extract project
         script: |
           unzip -o "Kimi_Agent_生活管理器构建.zip"
-          ls -la
+      - name: Remove Firebase
+        script: |
+          cd life_manager_app
+          python3 -c "
+          with open('android/app/build.gradle', 'r') as f:
+              content = f.read()
+          content = content.replace('id \"com.google.gms.google-services\"', '')
+          content = content.replace('implementation platform(\'com.google.firebase:firebase-bom:32.7.0\')', '')
+          content = content.replace('implementation \'com.google.firebase:firebase-analytics\'', '')
+          with open('android/app/build.gradle', 'w') as f:
+              f.write(content)
+          print('Firebase removed')
+          "
       - name: Get Flutter packages
         script: |
           cd life_manager_app
@@ -18,4 +30,4 @@ workflows:
           cd life_manager_app
           flutter build apk --release
     artifacts:
-      - life_manager_app/build/app/outputs/flutter-apk/app-release.apk
+      - life_manager_app/build/app/outputs/flutter-apk/app-release.apk 
