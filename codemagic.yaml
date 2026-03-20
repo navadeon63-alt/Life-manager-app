@@ -7,8 +7,13 @@ workflows:
     scripts:
       - name: Extract project
         script: |
-          ls -la
           unzip -o "Kimi_Agent_Flutter Finance Tracker App.zip"
+          python3 -c "
+content = open('finance_manager_app/pubspec.yaml').read()
+content = content.replace('flutter_local_notifications: ^17.2.1', 'flutter_local_notifications: ^16.3.3')
+open('finance_manager_app/pubspec.yaml', 'w').write(content)
+print('Patched pubspec.yaml')
+"
       - name: Get Flutter packages
         script: |
           cd finance_manager_app
