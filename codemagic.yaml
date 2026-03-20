@@ -8,7 +8,40 @@ workflows:
       - name: Extract project
         script: |
           unzip -o "Kimi_Agent_Flutter Finance Tracker App.zip"
-          python3 -c "open('finance_manager_app/pubspec.yaml','w').write(open('finance_manager_app/pubspec.yaml').read().replace('flutter_local_notifications: ^17.2.1','flutter_local_notifications: ^16.3.3'))"
+          python3 -c "
+f = open('finance_manager_app/pubspec.yaml', 'w')
+f.write('''name: finance_manager_app
+description: A personal finance tracker for South African users
+
+publish_to: none
+
+version: 1.0.0+1
+
+environment:
+  sdk: \">=3.0.0 <4.0.0\"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  image_picker: ^1.1.2
+  shared_preferences: ^2.2.3
+  http: ^1.2.2
+  uuid: ^4.4.2
+  intl: ^0.19.0
+  flutter_local_notifications: ^15.1.1
+  timezone: ^0.9.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+''')
+f.close()
+"
       - name: Get Flutter packages
         script: |
           cd finance_manager_app
@@ -18,4 +51,4 @@ workflows:
           cd finance_manager_app
           flutter build apk --release
     artifacts:
-      - finance_manager_app/build/app/outputs/flutter-apk/app-release.apk
+      - finance_manager_app/build/app/outputs/flutter-apk/app-release.apk 
