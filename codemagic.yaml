@@ -7,6 +7,7 @@ workflows:
     scripts:
       - name: Extract project
         script: |
+          ls -la
           unzip -o "Kimi_Agent_Flutter_Finance_Tracker_App.zip"
       - name: Get Flutter packages
         script: |
@@ -17,4 +18,4 @@ workflows:
           cd finance_manager_app
           flutter build apk --release
     artifacts:
-      - finance_manager_app/build/app/outputs/flutter-apk/app-release.apk
+      - finance_manager_app/build/app/outputs/flutter-apk/app-release.apk 
